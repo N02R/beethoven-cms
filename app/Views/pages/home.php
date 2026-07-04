@@ -163,22 +163,46 @@ document.getElementById("editToggle").onclick = function () {
 
 /* CLICK TRACKING (Foundation for Elementor) */
 document.querySelectorAll('.editable').forEach(el => {
-
-    el.addEventListener('click', function () {
-
+    
+    el.addEventListener('blur', function() {
+        
         if (!editMode) return;
-
-        console.log("ELEMENT SELECTED:", {
-            section: this.dataset.section,
-            field: this.dataset.field,
-            value: this.innerText
-        });
-
+        
+        let section = this.dataset.section;
+        let field = this.dataset.field;
+        let value = this.innerText;
+        
+        saveBlock(section, field, value);
     });
-
+    
 });
 
 </script>
+<script>
 
+function saveBlock(section, field, value) {
+
+    fetch("<?= APP_URL ?>/admin/api/update-block.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            section: section,
+            field: field,
+            value: value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Saved:", data);
+    })
+    .catch(err => {
+        console.error("Save Error:", err);
+    });
+
+}
+
+</script>
 </body>
 </html>
