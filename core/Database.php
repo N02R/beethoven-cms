@@ -1,41 +1,40 @@
 <?php
 
-require_once __DIR__ . '/config.php';
+class Database
+{
+    private static ?Database $instance = null;
+    private PDO $connection;
 
-class Database {
-
-    private static $instance = null;
-    private $pdo;
-
-    private function __construct() {
+    private function __construct()
+    {
+        $config = require __DIR__ . '/../config/database.php';
 
         try {
-
-            $this->pdo = new PDO(
-                "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
-                DB_USER,
-                DB_PASS,
-                [
-                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                ]
+            $this->connection = new PDO(
+                "mysql:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}",
+                $config['username'],
+                $config['password']
             );
 
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+
         } catch (PDOException $e) {
-            die("DB Connection Failed: " . $e->getMessage());
+            die("Database connection failed: " . $e->getMessage());
         }
     }
 
-    public static function getInstance() {
-
-        if (!self::$instance) {
-            self::$instance = new self();
+    public static function getInstance(): Database
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
         }
 
         return self::$instance;
     }
 
-    public function getConnection() {
-        return $this->pdo;
+    public function connection(): PDO
+    {
+        return $this->connection;
     }
 }
