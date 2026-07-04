@@ -12,18 +12,17 @@ $value   = $data['value'];
 
 $db = Database::getInstance()->connection();
 
-/* نحفظ التعديل داخل blocks */
 $stmt = $db->prepare("
-    UPDATE blocks 
-    SET content = :value 
-    WHERE section_name = :section 
-    AND field_name = :field
+    UPDATE blocks
+    SET content = :value
+    WHERE section_name = :section
+      AND field_name = :field
 ");
 
 $success = $stmt->execute([
-    'value' => $value,
+    'value'   => $value,
     'section' => $section,
-    'field' => $field
+    'field'   => $field
 ]);
 
 echo json_encode([

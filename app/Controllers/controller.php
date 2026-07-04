@@ -2,9 +2,6 @@
 
 class controller
 {
-    /**
-     * Render View
-     */
     protected function view(string $path, array $data = [])
     {
         extract($data);

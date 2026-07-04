@@ -3,7 +3,7 @@
 $sections = $sections ?? [];
 
 $hero = $sections['hero'] ?? [
-    'title' => 'No Title',
+    'title'       => 'No Title',
     'description' => 'No Description',
     'button_text' => 'Button'
 ];
@@ -14,82 +14,124 @@ $hero = $sections['hero'] ?? [
 <html lang="ar" dir="rtl">
 
 <head>
+
     <meta charset="UTF-8">
-    <title>Beethoven CMS Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><?= APP_NAME ?></title>
 
     <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/bootstrap.min.css">
 
     <style>
 
-        body {
-            margin: 0;
-            background: #0f172a;
-            color: #fff;
-            font-family: Arial;
+        body{
+            margin:0;
+            background:#0f172a;
+            color:#fff;
+            font-family:Arial,sans-serif;
         }
 
-        /* =========================
-           TOOLBAR
-        ========================= */
-        #cms-toolbar {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 99999;
+        /* ==========================
+           CMS Toolbar
+        ========================== */
+
+        #cms-toolbar{
+
+            position:fixed;
+
+            top:20px;
+            right:20px;
+
+            z-index:99999;
+
         }
 
-        #cms-toolbar button {
-            background: #0d6efd;
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            cursor: pointer;
+        #editToggle{
+
+            padding:12px 18px;
+
+            border:none;
+
+            border-radius:8px;
+
+            cursor:pointer;
+
+            background:#2563eb;
+
+            color:#fff;
+
         }
 
-        /* =========================
-           HERO
-        ========================= */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
+        /* ==========================
+           Hero
+        ========================== */
+
+        .hero{
+
+            min-height:100vh;
+
+            display:flex;
+
+            justify-content:center;
+
+            align-items:center;
+
+            text-align:center;
+
+            padding:40px;
+
         }
 
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
+        .hero h1{
+
+            font-size:48px;
+
+            margin-bottom:20px;
+
         }
 
-        .hero p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 20px;
+        .hero p{
+
+            font-size:20px;
+
+            margin-bottom:25px;
+
         }
 
-        .hero a {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #2563eb;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
+        .hero a{
+
+            display:inline-block;
+
+            background:#2563eb;
+
+            color:#fff;
+
+            padding:12px 22px;
+
+            border-radius:8px;
+
+            text-decoration:none;
+
         }
 
-        /* =========================
-           EDIT MODE STYLE
-        ========================= */
-        .edit-mode .editable {
-            outline: 2px dashed #00d4ff;
-            cursor: text;
+        /* ==========================
+           Edit Mode
+        ========================== */
+
+        .edit-mode .editable{
+
+            outline:2px dashed #38bdf8;
+
+            cursor:text;
+
         }
 
-        .editable:focus {
-            outline: 2px solid #00d4ff;
-            background: rgba(0, 212, 255, 0.05);
+        .editable:focus{
+
+            outline:2px solid #38bdf8;
+
+            background:rgba(56,189,248,.08);
+
         }
 
     </style>
@@ -98,285 +140,51 @@ $hero = $sections['hero'] ?? [
 
 <body>
 
-<!-- =========================
-     TOOLBAR
-========================= -->
 <div id="cms-toolbar">
-    <button id="editToggle">✏️ Edit Mode</button>
+
+    <button id="editToggle">
+
+        ✏️ Edit Mode
+
+    </button>
+
 </div>
 
-<!-- =========================
-     HERO BLOCK
-========================= -->
 <section class="hero">
 
     <div>
 
-        <h1 class="editable"
+        <h1
+            class="editable"
             data-section="hero"
             data-field="title"
             contenteditable="false">
 
-            <?= $hero['title'] ?>
+            <?= htmlspecialchars($hero['title']) ?>
+
         </h1>
 
-        <p class="editable"
-           data-section="hero"
-           data-field="description"
-           contenteditable="false">
+        <p
+            class="editable"
+            data-section="hero"
+            data-field="description"
+            contenteditable="false">
 
-            <?= $hero['description'] ?>
+            <?= htmlspecialchars($hero['description']) ?>
+
         </p>
 
-        <a href="#"
-           class="editable"
-           data-section="hero"
-           data-field="button_text"
-           contenteditable="false">
+        <a
+            href="#"
+            class="editable"
+            data-section="hero"
+            data-field="button_text"
+            contenteditable="false">
 
-            <?= $hero['button_text'] ?>
+            <?= htmlspecialchars($hero['button_text']) ?>
+
         </a>
 
     </div>
 
 </section>
-
-<!-- =========================
-     ELEMENTOR ENGINE (CORE)
-========================= -->
-<?php
-
-$sections = $sections ?? [];
-
-$hero = $sections['hero'] ?? [
-    'title' => 'No Title',
-    'description' => 'No Description',
-    'button_text' => 'Button'
-];
-
-?>
-
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Beethoven CMS Home</title>
-
-    <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/bootstrap.min.css">
-
-    <style>
-
-        body {
-            margin: 0;
-            background: #0f172a;
-            color: #fff;
-            font-family: Arial;
-        }
-
-        /* =========================
-           TOOLBAR
-        ========================= */
-        #cms-toolbar {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 99999;
-            display: flex;
-            gap: 10px;
-        }
-
-        #cms-toolbar button {
-            background: #0d6efd;
-            color: white;
-            border: none;
-            padding: 10px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* =========================
-           HERO
-        ========================= */
-        .hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-bottom: 20px;
-        }
-
-        .hero a {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #2563eb;
-            color: #fff;
-            border-radius: 8px;
-            text-decoration: none;
-        }
-
-        /* =========================
-           EDIT MODE
-        ========================= */
-        .edit-mode .editable {
-            outline: 2px dashed #00d4ff;
-            cursor: text;
-        }
-
-        .editable:focus {
-            outline: 2px solid #00d4ff;
-            background: rgba(0, 212, 255, 0.05);
-        }
-
-    </style>
-
-</head>
-
-<body>
-
-<!-- TOOLBAR -->
-<div id="cms-toolbar">
-    <button id="editToggle">✏️ Edit Mode</button>
-    <button id="saveAll">💾 Save</button>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-
-    <div>
-
-        <h1 class="editable"
-            data-section="hero"
-            data-field="title"
-            contenteditable="false">
-
-            <?= $hero['title'] ?>
-        </h1>
-
-        <p class="editable"
-           data-section="hero"
-           data-field="description"
-           contenteditable="false">
-
-            <?= $hero['description'] ?>
-        </p>
-
-        <a href="#"
-           class="editable"
-           data-section="hero"
-           data-field="button_text"
-           contenteditable="false">
-
-            <?= $hero['button_text'] ?>
-        </a>
-
-    </div>
-
-</section>
-
-<!-- =========================
-     ELEMENTOR ENGINE
-========================= -->
-<script>
-
-let editMode = false;
-
-/* =========================
-   TOGGLE EDIT MODE
-========================= */
-document.getElementById("editToggle").onclick = function () {
-
-    editMode = !editMode;
-
-    document.body.classList.toggle("edit-mode", editMode);
-
-    document.querySelectorAll('.editable').forEach(el => {
-        el.setAttribute('contenteditable', editMode);
-    });
-
-};
-
-
-/* =========================
-   SAVE FUNCTION
-========================= */
-function saveBlock(section, field, value) {
-
-    console.log("Saving:", section, field, value);
-
-    fetch("<?= APP_URL ?>/admin/api/update-block.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            section: section,
-            field: field,
-            value: value
-        })
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log("Saved ✔", data);
-    })
-    .catch(err => {
-        console.error("Save Error ❌", err);
-    });
-
-}
-
-
-/* =========================
-   AUTO SAVE (LIVE)
-========================= */
-document.querySelectorAll('.editable').forEach(el => {
-
-    el.addEventListener('input', function () {
-
-        if (!editMode) return;
-
-        saveBlock(
-            this.dataset.section,
-            this.dataset.field,
-            this.innerText
-        );
-
-    });
-
-});
-
-
-/* =========================
-   MANUAL SAVE BUTTON
-========================= */
-document.getElementById("saveAll").onclick = function () {
-
-    document.querySelectorAll('.editable').forEach(el => {
-
-        saveBlock(
-            el.dataset.section,
-            el.dataset.field,
-            el.innerText
-        );
-
-    });
-
-    alert("Saved ✔");
-};
-
-</script>
-
-</body>
-</html>
