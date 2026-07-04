@@ -26,11 +26,18 @@ $stmt = $db->prepare("
 ");
 
 $success = $stmt->execute([
-    'id'    => $id,
+    'id' => (int)$id,
     'value' => $value
 ]);
 
+// تأكيد التحديث
+$stmt2 = $db->prepare("SELECT content FROM blocks WHERE id = ?");
+$stmt2->execute([$id]);
+$check = $stmt2->fetch(PDO::FETCH_ASSOC);
+
 echo json_encode([
     'success' => $success,
-    'message' => $success ? 'Saved' : 'Failed'
+    'db_value' => $check['content'] ?? null
 ]);
+
+exit;
