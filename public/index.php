@@ -50,7 +50,7 @@ $router  = new Router();
 */
 
 $router->get('/', 'HomeController@index');
-
+echo "ROUTER REACHED"; exit;
 /*
 |---------------------------
 | RUN
