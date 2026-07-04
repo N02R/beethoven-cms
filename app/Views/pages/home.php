@@ -1,5 +1,16 @@
+
 <?php
-$hero = $sections['hero'] ?? [];
+
+// حماية من عدم وجود المتغير
+$sections = $sections ?? [];
+
+// Hero data مع fallback كامل
+$hero = $sections['hero'] ?? [
+    'title' => 'No Title',
+    'description' => 'No Description',
+    'button_text' => 'Button'
+];
+
 ?>
 
 <!DOCTYPE html>
@@ -9,9 +20,11 @@ $hero = $sections['hero'] ?? [];
     <meta charset="UTF-8">
     <title>Beethoven CMS Home</title>
 
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/bootstrap.min.css">
 
     <style>
+
         body {
             margin: 0;
             background: #0f172a;
@@ -19,7 +32,9 @@ $hero = $sections['hero'] ?? [];
             font-family: Arial;
         }
 
-        /* ===== Toolbar ===== */
+        /* =========================
+           TOOLBAR
+        ========================= */
         #cms-toolbar {
             position: fixed;
             top: 15px;
@@ -36,7 +51,9 @@ $hero = $sections['hero'] ?? [];
             cursor: pointer;
         }
 
-        /* ===== Hero ===== */
+        /* =========================
+           HERO SECTION
+        ========================= */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -66,44 +83,53 @@ $hero = $sections['hero'] ?? [];
             text-decoration: none;
         }
 
-        /* ===== EDIT MODE ===== */
+        /* =========================
+           EDIT MODE STYLE
+        ========================= */
         .edit-mode .editable {
             outline: 2px dashed #00d4ff;
             cursor: text;
         }
 
     </style>
+
 </head>
 
 <body>
 
-<!-- 🟣 TOOLBAR -->
+<!-- =========================
+     TOOLBAR
+========================= -->
 <div id="cms-toolbar">
     <button id="editToggle">✏️ Edit Mode</button>
 </div>
 
-<!-- 🟢 HERO -->
+<!-- =========================
+     HERO SECTION
+========================= -->
 <section class="hero">
 
     <div>
 
         <h1 class="editable" contenteditable="false" data-field="title">
-            <?= $hero['title'] ?? 'No Title' ?>
+            <?= $hero['title'] ?>
         </h1>
 
         <p class="editable" contenteditable="false" data-field="description">
-            <?= $hero['description'] ?? 'No Description' ?>
+            <?= $hero['description'] ?>
         </p>
 
         <a href="#" class="editable" contenteditable="false" data-field="button_text">
-            <?= $hero['button_text'] ?? 'Button' ?>
+            <?= $hero['button_text'] ?>
         </a>
 
     </div>
 
 </section>
 
-<!-- 🟡 JS -->
+<!-- =========================
+     JS EDIT MODE
+========================= -->
 <script>
 
 let editMode = false;
