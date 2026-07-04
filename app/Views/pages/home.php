@@ -6,9 +6,8 @@
 </head>
 <body>
 
-<h1><?= $title ?></h1>
-
-<p>CMS is working 🚀</p>
+<h1><?= $hero['title_text'] ?? 'No Title' ?></h1>
+<p><?= $hero['description'] ?? '' ?></p>
 
 </body>
 </html>

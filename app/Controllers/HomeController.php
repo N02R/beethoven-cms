@@ -1,11 +1,15 @@
 <?php
 
-class HomeController extends controller
+class HomeController extends Controller
 {
     public function index()
     {
+        $page = new Page();
+
+        $hero = $page->find('home_hero');
+
         return $this->view('pages/home', [
-            'title' => 'Beethoven CMS Home'
+            'hero' => $hero
         ]);
     }
 }
