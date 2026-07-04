@@ -2,9 +2,25 @@
 
 require_once __DIR__ . '/../core/bootstrap.php';
 require_once __DIR__ . '/../core/Request.php';
+require_once __DIR__ . '/../core/Router.php';
+require_once __DIR__ . '/../app/Controllers/Controller.php';
+require_once __DIR__ . '/../app/Controllers/HomeController.php';
 
 $request = new Request();
+$router = new Router();
 
-echo "URI: " . $request->uri();
-echo "<br>";
-echo "METHOD: " . $request->method();
+/*
+|---------------------------
+| Routes
+|---------------------------
+*/
+
+$router->get('/', 'HomeController@index');
+
+/*
+|---------------------------
+| Run App
+|---------------------------
+*/
+
+$router->resolve($request);
