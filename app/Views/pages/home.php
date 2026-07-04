@@ -1,10 +1,7 @@
-
 <?php
 
-// حماية من عدم وجود المتغير
 $sections = $sections ?? [];
 
-// Hero data مع fallback كامل
 $hero = $sections['hero'] ?? [
     'title' => 'No Title',
     'description' => 'No Description',
@@ -20,8 +17,8 @@ $hero = $sections['hero'] ?? [
     <meta charset="UTF-8">
     <title>Beethoven CMS Home</title>
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/bootstrap.min.css">
+    <!-- IMPORTANT FIX: APP_URL بدل BASE_URL -->
+    <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/bootstrap.min.css">
 
     <style>
 
@@ -52,7 +49,7 @@ $hero = $sections['hero'] ?? [
         }
 
         /* =========================
-           HERO SECTION
+           HERO
         ========================= */
         .hero {
             min-height: 100vh;
@@ -84,7 +81,7 @@ $hero = $sections['hero'] ?? [
         }
 
         /* =========================
-           EDIT MODE STYLE
+           EDIT MODE
         ========================= */
         .edit-mode .editable {
             outline: 2px dashed #00d4ff;
@@ -97,16 +94,12 @@ $hero = $sections['hero'] ?? [
 
 <body>
 
-<!-- =========================
-     TOOLBAR
-========================= -->
+<!-- TOOLBAR -->
 <div id="cms-toolbar">
     <button id="editToggle">✏️ Edit Mode</button>
 </div>
 
-<!-- =========================
-     HERO SECTION
-========================= -->
+<!-- HERO -->
 <section class="hero">
 
     <div>
@@ -127,14 +120,11 @@ $hero = $sections['hero'] ?? [
 
 </section>
 
-<!-- =========================
-     JS EDIT MODE
-========================= -->
+<!-- JS -->
 <script>
 
 let editMode = false;
 
-/* Toggle Edit Mode */
 document.getElementById("editToggle").onclick = function () {
 
     editMode = !editMode;
