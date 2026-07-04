@@ -148,7 +148,9 @@ $hero = $sections['hero'] ?? [
 
 let editMode = false;
 
-/* Toggle Edit Mode */
+/* =========================
+   TOGGLE EDIT MODE
+========================= */
 document.getElementById("editToggle").onclick = function () {
 
     editMode = !editMode;
@@ -158,29 +160,15 @@ document.getElementById("editToggle").onclick = function () {
     document.querySelectorAll('.editable').forEach(el => {
         el.setAttribute('contenteditable', editMode);
     });
-
 };
 
-/* CLICK TRACKING (Foundation for Elementor) */
-document.querySelectorAll('.editable').forEach(el => {
-    
-    el.addEventListener('blur', function() {
-        
-        if (!editMode) return;
-        
-        let section = this.dataset.section;
-        let field = this.dataset.field;
-        let value = this.innerText;
-        
-        saveBlock(section, field, value);
-    });
-    
-});
 
-</script>
-<script>
-
+/* =========================
+   SAVE FUNCTION (MUST BE FIRST)
+========================= */
 function saveBlock(section, field, value) {
+
+    console.log("Saving...", { section, field, value });
 
     fetch("<?= APP_URL ?>/admin/api/update-block.php", {
         method: "POST",
@@ -195,13 +183,33 @@ function saveBlock(section, field, value) {
     })
     .then(res => res.json())
     .then(data => {
-        console.log("Saved:", data);
+        console.log("Saved ✔", data);
     })
     .catch(err => {
-        console.error("Save Error:", err);
+        console.error("Save Error ❌", err);
     });
 
 }
+
+
+/* =========================
+   ELEMENTOR LIVE EDIT SYSTEM
+========================= */
+document.querySelectorAll('.editable').forEach(el => {
+
+    /* الأفضل من blur */
+    el.addEventListener('input', function () {
+
+        if (!editMode) return;
+
+        let section = this.dataset.section;
+        let field   = this.dataset.field;
+        let value   = this.innerText;
+
+        saveBlock(section, field, value);
+    });
+
+});
 
 </script>
 </body>
