@@ -16,6 +16,7 @@ class Router
 
     public function resolve(Request $request)
     {
+        echo "INSIDE RESOLVE"; exit;
         $method = $request->method();
         $uri = $this->format($request->uri());
 
