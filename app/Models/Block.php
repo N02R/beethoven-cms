@@ -9,13 +9,11 @@ class Block
         $this->db = Database::getInstance()->connection();
     }
 
-    /**
-     * جلب Blocks حسب Section
-     */
     public function getBySection(int $section_id)
     {
         $stmt = $this->db->prepare("
-            SELECT * FROM blocks 
+            SELECT field_name, content 
+            FROM blocks 
             WHERE section_id = :section_id
         ");
 
@@ -23,6 +21,14 @@ class Block
             'section_id' => $section_id
         ]);
 
-        return $stmt->fetchAll();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $result = [];
+
+        foreach ($rows as $row) {
+            $result[$row['field_name']] = $row['content'];
+        }
+
+        return $result;
     }
 }
