@@ -4,7 +4,6 @@ class HomeController extends controller
 {
     public function index()
     {
-        echo "HOME CONTROLLER WORKING"; exit;
         $db = Database::getInstance()->connection();
 
         $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
