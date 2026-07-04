@@ -191,9 +191,30 @@ function saveBlock(id, value){
         })
     })
     .then(res => res.json())
-    .then(data => {
-        console.log("Saved ✔", data);
-    })
+   .then(data => {
+    
+    console.log("Saved ✔", data);
+    
+    // 👇 عرض النتيجة داخل الصفحة
+    let box = document.getElementById("debugBox");
+    
+    if (!box) {
+        box = document.createElement("div");
+        box.id = "debugBox";
+        box.style.position = "fixed";
+        box.style.bottom = "20px";
+        box.style.left = "20px";
+        box.style.background = "#000";
+        box.style.color = "#0f0";
+        box.style.padding = "10px";
+        box.style.zIndex = "99999";
+        box.style.fontSize = "12px";
+        document.body.appendChild(box);
+    }
+    
+    box.innerHTML = JSON.stringify(data, null, 2);
+    
+})
     .catch(err => {
         console.error("Save Error ❌", err);
     });
