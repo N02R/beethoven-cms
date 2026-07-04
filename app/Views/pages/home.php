@@ -32,106 +32,75 @@ $hero = $sections['hero'] ?? [
         }
 
         /* ==========================
-           CMS Toolbar
+           TOOLBAR
         ========================== */
 
         #cms-toolbar{
-
             position:fixed;
-
             top:20px;
             right:20px;
-
             z-index:99999;
-
+            display:flex;
+            gap:10px;
         }
 
-        #editToggle{
-
+        #editToggle, #saveBtn{
             padding:12px 18px;
-
             border:none;
-
             border-radius:8px;
-
             cursor:pointer;
-
             background:#2563eb;
-
             color:#fff;
+        }
 
+        #saveBtn{
+            background:#16a34a;
         }
 
         /* ==========================
-           Hero
+           HERO
         ========================== */
 
         .hero{
-
             min-height:100vh;
-
             display:flex;
-
             justify-content:center;
-
             align-items:center;
-
             text-align:center;
-
             padding:40px;
-
         }
 
         .hero h1{
-
             font-size:48px;
-
             margin-bottom:20px;
-
         }
 
         .hero p{
-
             font-size:20px;
-
             margin-bottom:25px;
-
         }
 
         .hero a{
-
             display:inline-block;
-
             background:#2563eb;
-
             color:#fff;
-
             padding:12px 22px;
-
             border-radius:8px;
-
             text-decoration:none;
-
         }
 
         /* ==========================
-           Edit Mode
+           EDIT MODE
         ========================== */
 
         .edit-mode .editable{
-
             outline:2px dashed #38bdf8;
-
             cursor:text;
-
         }
 
         .editable:focus{
-
             outline:2px solid #38bdf8;
-
             background:rgba(56,189,248,.08);
-
         }
 
     </style>
@@ -140,46 +109,39 @@ $hero = $sections['hero'] ?? [
 
 <body>
 
+<!-- TOOLBAR -->
 <div id="cms-toolbar">
 
-    <button id="editToggle">
-
-        ✏️ Edit Mode
-
-    </button>
+    <button id="editToggle">✏️ Edit Mode</button>
+    <button id="saveBtn">💾 Save</button>
 
 </div>
 
+<!-- HERO -->
 <section class="hero">
 
     <div>
 
-        <h1
-            class="editable"
-            data-section="hero"
-            data-field="title"
+        <h1 class="editable"
+            data-id="1"
             contenteditable="false">
 
             <?= htmlspecialchars($hero['title']) ?>
 
         </h1>
 
-        <p
-            class="editable"
-            data-section="hero"
-            data-field="description"
-            contenteditable="false">
+        <p class="editable"
+           data-id="2"
+           contenteditable="false">
 
             <?= htmlspecialchars($hero['description']) ?>
 
         </p>
 
-        <a
-            href="#"
-            class="editable"
-            data-section="hero"
-            data-field="button_text"
-            contenteditable="false">
+        <a href="#"
+           class="editable"
+           data-id="3"
+           contenteditable="false">
 
             <?= htmlspecialchars($hero['button_text']) ?>
 
@@ -193,9 +155,11 @@ $hero = $sections['hero'] ?? [
 
 let editMode = false;
 
-const button = document.getElementById("editToggle");
+/* ==========================
+   TOGGLE EDIT MODE
+========================== */
 
-button.addEventListener("click", () => {
+document.getElementById("editToggle").addEventListener("click", function(){
 
     editMode = !editMode;
 
@@ -205,10 +169,78 @@ button.addEventListener("click", () => {
         el.contentEditable = editMode;
     });
 
-    button.textContent = editMode
-        ? "✅ Editing..."
-        : "✏️ Edit Mode";
+    this.textContent = editMode ? "✅ Editing..." : "✏️ Edit Mode";
+
+});
+
+
+/* ==========================
+   SAVE FUNCTION
+========================== */
+
+function saveBlock(id, value){
+
+    fetch("<?= APP_URL ?>/admin/api/update-block.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            id: id,
+            value: value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Saved ✔", data);
+    })
+    .catch(err => {
+        console.error("Save Error ❌", err);
+    });
+
+}
+
+
+/* ==========================
+   AUTO SAVE ON INPUT
+========================== */
+
+document.querySelectorAll(".editable").forEach(el => {
+
+    el.addEventListener("input", function(){
+
+        if(!editMode) return;
+
+        saveBlock(
+            this.dataset.id,
+            this.innerText
+        );
+
+    });
+
+});
+
+
+/* ==========================
+   MANUAL SAVE BUTTON
+========================== */
+
+document.getElementById("saveBtn").addEventListener("click", function(){
+
+    document.querySelectorAll(".editable").forEach(el => {
+
+        saveBlock(
+            el.dataset.id,
+            el.innerText
+        );
+
+    });
+
+    alert("Saved ✔");
 
 });
 
 </script>
+
+</body>
+</html>

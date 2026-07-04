@@ -6,23 +6,28 @@ require_once __DIR__ . '/../../core/Database.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-$section = $data['section'];
-$field   = $data['field'];
-$value   = $data['value'];
+$id    = $data['id'] ?? null;
+$value = $data['value'] ?? '';
+
+if (!$id) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'Missing ID'
+    ]);
+    exit;
+}
 
 $db = Database::getInstance()->connection();
 
 $stmt = $db->prepare("
     UPDATE blocks
     SET content = :value
-    WHERE section_name = :section
-      AND field_name = :field
+    WHERE id = :id
 ");
 
 $success = $stmt->execute([
-    'value'   => $value,
-    'section' => $section,
-    'field'   => $field
+    'id'    => $id,
+    'value' => $value
 ]);
 
 echo json_encode([
