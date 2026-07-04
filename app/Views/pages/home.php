@@ -188,3 +188,27 @@ $hero = $sections['hero'] ?? [
     </div>
 
 </section>
+
+<script>
+
+let editMode = false;
+
+const button = document.getElementById("editToggle");
+
+button.addEventListener("click", () => {
+
+    editMode = !editMode;
+
+    document.body.classList.toggle("edit-mode", editMode);
+
+    document.querySelectorAll(".editable").forEach(el => {
+        el.contentEditable = editMode;
+    });
+
+    button.textContent = editMode
+        ? "✅ Editing..."
+        : "✏️ Edit Mode";
+
+});
+
+</script>
