@@ -1,13 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><?= $title ?></title>
-</head>
-<body>
+<?php
+$hero = $sections['hero'] ?? [];
+?>
 
-<h1><?= $hero['title_text'] ?? 'No Title' ?></h1>
-<p><?= $hero['description'] ?? '' ?></p>
+<section class="hero">
 
-</body>
-</html>
+    <h1>
+        <?= $hero[0]['content'] ?? 'No Title' ?>
+    </h1>
+
+    <p>
+        <?= $hero[1]['content'] ?? 'No Description' ?>
+    </p>
+
+    <a href="#">
+        <?= $hero[2]['content'] ?? 'Button' ?>
+    </a>
+
+</section>

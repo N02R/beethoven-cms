@@ -1,15 +1,31 @@
 <?php
 
-class HomeController extends Controller
+class HomeController extends controller
 {
     public function index()
     {
-        $page = new Page();
+        $db = Database::getInstance()->connection();
 
-        $hero = $page->find('home_hero');
+        // 1. جلب الصفحة
+        $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
+        $stmt->execute();
+        $page = $stmt->fetch();
+
+        // 2. جلب Sections
+        $sectionModel = new Section();
+        $sections = $sectionModel->getByPage($page['id']);
+
+        // 3. تجهيز Blocks
+        $blockModel = new Block();
+
+        $data = [];
+
+        foreach ($sections as $section) {
+            $data[$section['name']] = $blockModel->getBySection($section['id']);
+        }
 
         return $this->view('pages/home', [
-            'hero' => $hero
+            'sections' => $data
         ]);
     }
 }
