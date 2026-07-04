@@ -4,16 +4,10 @@ $hero = $sections['hero'] ?? [];
 
 <section class="hero">
 
-    <h1>
-        <?= $hero[0]['content'] ?? 'No Title' ?>
-    </h1>
+    <h1><?= $sections['hero']['title'] ?? 'No Title' ?></h1>
 
-    <p>
-        <?= $hero[1]['content'] ?? 'No Description' ?>
-    </p>
+<p><?= $sections['hero']['description'] ?? 'No Description' ?></p>
 
-    <a href="#">
-        <?= $hero[2]['content'] ?? 'Button' ?>
-    </a>
+<a href="#"><?= $sections['hero']['button_text'] ?? 'Button' ?></a>
 
 </section>
