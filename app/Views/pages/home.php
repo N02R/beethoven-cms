@@ -17,7 +17,6 @@ $hero = $sections['hero'] ?? [
     <meta charset="UTF-8">
     <title>Beethoven CMS Home</title>
 
-    <!-- IMPORTANT FIX: APP_URL بدل BASE_URL -->
     <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/bootstrap.min.css">
 
     <style>
@@ -81,11 +80,16 @@ $hero = $sections['hero'] ?? [
         }
 
         /* =========================
-           EDIT MODE
+           EDIT MODE STYLE
         ========================= */
         .edit-mode .editable {
             outline: 2px dashed #00d4ff;
             cursor: text;
+        }
+
+        .editable:focus {
+            outline: 2px solid #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
         }
 
     </style>
@@ -94,25 +98,42 @@ $hero = $sections['hero'] ?? [
 
 <body>
 
-<!-- TOOLBAR -->
+<!-- =========================
+     TOOLBAR
+========================= -->
 <div id="cms-toolbar">
     <button id="editToggle">✏️ Edit Mode</button>
 </div>
 
-<!-- HERO -->
+<!-- =========================
+     HERO BLOCK
+========================= -->
 <section class="hero">
 
     <div>
 
-        <h1 class="editable" contenteditable="false" data-field="title">
+        <h1 class="editable"
+            data-section="hero"
+            data-field="title"
+            contenteditable="false">
+
             <?= $hero['title'] ?>
         </h1>
 
-        <p class="editable" contenteditable="false" data-field="description">
+        <p class="editable"
+           data-section="hero"
+           data-field="description"
+           contenteditable="false">
+
             <?= $hero['description'] ?>
         </p>
 
-        <a href="#" class="editable" contenteditable="false" data-field="button_text">
+        <a href="#"
+           class="editable"
+           data-section="hero"
+           data-field="button_text"
+           contenteditable="false">
+
             <?= $hero['button_text'] ?>
         </a>
 
@@ -120,11 +141,14 @@ $hero = $sections['hero'] ?? [
 
 </section>
 
-<!-- JS -->
+<!-- =========================
+     ELEMENTOR ENGINE (CORE)
+========================= -->
 <script>
 
 let editMode = false;
 
+/* Toggle Edit Mode */
 document.getElementById("editToggle").onclick = function () {
 
     editMode = !editMode;
@@ -136,6 +160,23 @@ document.getElementById("editToggle").onclick = function () {
     });
 
 };
+
+/* CLICK TRACKING (Foundation for Elementor) */
+document.querySelectorAll('.editable').forEach(el => {
+
+    el.addEventListener('click', function () {
+
+        if (!editMode) return;
+
+        console.log("ELEMENT SELECTED:", {
+            section: this.dataset.section,
+            field: this.dataset.field,
+            value: this.innerText
+        });
+
+    });
+
+});
 
 </script>
 
