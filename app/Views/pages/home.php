@@ -16,19 +16,19 @@ $sections = $sections ?? [];
 <body>
 
 <!-- HEADER -->
-<?php require BASE_PATH . '/app/Components/home/header.php'; ?>
+
 
 <!-- HERO -->
-<?php require BASE_PATH . '/app/Components/home/hero.php'; ?>
+<?php require BASE_PATH . '/app/components/home/hero.php'; ?>
 
 <!-- SERVICES -->
-<?php require BASE_PATH . '/app/Components/home/services.php'; ?>
+
 
 <!-- CHOOSE -->
-<?php require BASE_PATH . '/app/Components/home/choose.php'; ?>
+
 
 <!-- FOOTER -->
-<?php require BASE_PATH . '/app/Components/home/footer.php'; ?>
+
 
 </body>
 </html>
