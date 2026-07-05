@@ -12,7 +12,7 @@ class Section
     /**
      * جلب Sections حسب الصفحة
      */
-    public function getByPage(int $page_id)
+    public function getByPage(int $page_id): array
     {
         $stmt = $this->db->prepare("
             SELECT * FROM sections 
@@ -24,6 +24,6 @@ class Section
             'page_id' => $page_id
         ]);
 
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
