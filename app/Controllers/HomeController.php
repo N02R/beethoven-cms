@@ -2,30 +2,39 @@
 
 class HomeController extends controller
 {
-    public function index()
-    {
-        $db = Database::getInstance()->connection();
+public function index()
+{
+    $db = Database::getInstance()->connection();
 
-        $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
-        $stmt->execute();
-        $page = $stmt->fetch(PDO::FETCH_ASSOC);
+    $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
+    $stmt->execute();
+    $page = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $sectionModel = new Section();
-        $blockModel = new Block();
+    $sectionModel = new Section();
+    $blockModel = new Block();
 
-        $sectionsData = [];
+    $sectionsData = [];
 
-        if ($page) {
-            $sections = $sectionModel->getByPage($page['id']);
+    if ($page) {
+        $sections = $sectionModel->getByPage($page['id']);
 
-            foreach ($sections as $section) {
-                $sectionsData[$section['name']] =
-                    $blockModel->getBySection($section['id']);
+        foreach ($sections as $section) {
+
+            $blocks = $blockModel->getBySection($section['id']);
+
+            // 🔥 تحويل blocks إلى شكل usable (key => value)
+            $formatted = [];
+
+            foreach ($blocks as $block) {
+                $formatted[$block['field_name']] = $block['content'];
             }
-        }
 
-        return $this->view('pages/home', [
-            'sections' => $sectionsData
-        ]);
+            $sectionsData[$section['name']] = $formatted;
+        }
     }
+
+    return $this->view('pages/home', [
+        'sections' => $sectionsData
+    ]);
+}
 }
