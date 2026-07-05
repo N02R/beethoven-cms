@@ -2,11 +2,17 @@
 
 $sections = $sections ?? [];
 
-$hero = $sections['hero'] ?? [
-    'title'       => 'No Title',
-    'description' => 'No Description',
-    'button_text' => 'Button'
-];
+/*
+|--------------------------------------------------------------------------
+| HERO SAFE ACCESS
+|--------------------------------------------------------------------------
+*/
+
+$hero = $sections['hero'] ?? [];
+
+$title = $hero['title'] ?? 'No Title';
+$description = $hero['description'] ?? 'No Description';
+$buttonText = $hero['button_text'] ?? 'Button';
 
 ?>
 
@@ -36,10 +42,7 @@ $hero = $sections['hero'] ?? [
             font-family:Arial,sans-serif;
         }
 
-        /* ==========================
-           TOOLBAR
-        ========================== */
-
+        /* TOOLBAR */
         #cms-toolbar{
             position:fixed;
             top:20px;
@@ -59,18 +62,10 @@ $hero = $sections['hero'] ?? [
             font-size:14px;
         }
 
-        #editToggle{
-            background:#2563eb;
-        }
+        #editToggle{ background:#2563eb; }
+        #saveBtn{ background:#16a34a; }
 
-        #saveBtn{
-            background:#16a34a;
-        }
-
-        /* ==========================
-           HERO
-        ========================== */
-
+        /* HERO */
         .hero{
             min-height:100vh;
             display:flex;
@@ -100,10 +95,7 @@ $hero = $sections['hero'] ?? [
             border-radius:8px;
         }
 
-        /* ==========================
-           EDIT MODE
-        ========================== */
-
+        /* EDIT MODE */
         .edit-mode .editable{
             outline:2px dashed #38bdf8;
             cursor:text;
@@ -124,7 +116,6 @@ $hero = $sections['hero'] ?? [
 <div id="cms-toolbar">
 
     <button id="editToggle">✏️ Edit Mode</button>
-
     <button id="saveBtn">💾 Save</button>
 
 </div>
@@ -134,29 +125,16 @@ $hero = $sections['hero'] ?? [
 
     <div>
 
-        <h1 class="editable"
-            data-id="1"
-            contenteditable="false">
-
-            <?= htmlspecialchars($hero['title']) ?>
-
+        <h1 class="editable" data-id="1" contenteditable="false">
+            <?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?>
         </h1>
 
-        <p class="editable"
-           data-id="2"
-           contenteditable="false">
-
-            <?= htmlspecialchars($hero['description']) ?>
-
+        <p class="editable" data-id="2" contenteditable="false">
+            <?= htmlspecialchars($description, ENT_QUOTES, 'UTF-8') ?>
         </p>
 
-        <a href="#"
-           class="editable"
-           data-id="3"
-           contenteditable="false">
-
-            <?= htmlspecialchars($hero['button_text']) ?>
-
+        <a href="#" class="editable" data-id="3" contenteditable="false">
+            <?= htmlspecialchars($buttonText, ENT_QUOTES, 'UTF-8') ?>
         </a>
 
     </div>
@@ -168,10 +146,7 @@ $hero = $sections['hero'] ?? [
 
 let editMode = false;
 
-/* ==========================
-   EDIT MODE TOGGLE
-========================== */
-
+/* TOGGLE EDIT MODE */
 document.getElementById("editToggle").addEventListener("click", function(){
 
     editMode = !editMode;
@@ -182,56 +157,51 @@ document.getElementById("editToggle").addEventListener("click", function(){
         el.contentEditable = editMode;
     });
 
-    this.textContent = editMode
-        ? "✅ Editing..."
-        : "✏️ Edit Mode";
+    this.textContent = editMode ? "✅ Editing..." : "✏️ Edit Mode";
 
 });
 
 
-/* ==========================
-   SAVE BUTTON (ONLY UI TEST)
-========================== */
+/* SAVE */
+document.getElementById("saveBtn").addEventListener("click", function(){
 
-document.getElementById("saveBtn").addEventListener("click", function() {
-    
     let data = [];
-    
+
     document.querySelectorAll(".editable").forEach(el => {
+
         data.push({
             id: el.dataset.id,
             value: el.innerText
         });
+
     });
-    
+
     fetch(window.location.origin + "/admin/api/update_block.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                blocks: data
-            })
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            blocks: data
         })
-        .then(async res => {
-            
-            console.log("STATUS:", res.status);
-            
-            let text = await res.text();
-            
-            console.log("RAW RESPONSE:", text);
-            
-            alert("STATUS: " + res.status + "\n" + text);
-            
-        })
-        .catch(err => {
-            
-            console.log("FETCH ERROR:", err);
-            
-            alert("FETCH FAILED (check console)");
-            
-        });
-    
+    })
+    .then(async res => {
+
+        let text = await res.text();
+
+        console.log("STATUS:", res.status);
+        console.log("RESPONSE:", text);
+
+        alert("STATUS: " + res.status + "\n" + text);
+
+    })
+    .catch(err => {
+
+        console.log("ERROR:", err);
+        alert("FETCH FAILED");
+
+    });
+
 });
 
 </script>
