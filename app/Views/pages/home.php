@@ -198,38 +198,37 @@ document.getElementById("saveBtn").addEventListener("click", function() {
     let data = [];
     
     document.querySelectorAll(".editable").forEach(el => {
-        
         data.push({
             id: el.dataset.id,
             value: el.innerText
         });
-        
     });
     
     fetch(window.location.origin + "/admin/api/update-block.php", {
-            
             method: "POST",
-            
             headers: {
                 "Content-Type": "application/json"
             },
-            
             body: JSON.stringify({
                 blocks: data
             })
-            
         })
-        .then(res => res.json())
-        .then(res => {
+        .then(async res => {
             
-            alert("Server Response: " + JSON.stringify(res));
-            console.log(res);
+            console.log("STATUS:", res.status);
+            
+            let text = await res.text();
+            
+            console.log("RAW RESPONSE:", text);
+            
+            alert("STATUS: " + res.status + "\n" + text);
             
         })
         .catch(err => {
             
-            alert("Error sending data");
-            console.log(err);
+            console.log("FETCH ERROR:", err);
+            
+            alert("FETCH FAILED (check console)");
             
         });
     
