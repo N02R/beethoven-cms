@@ -1,3 +1,4 @@
+<?php
 class Section
 {
     private PDO $db;
