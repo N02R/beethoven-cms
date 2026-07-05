@@ -16,25 +16,43 @@ public function index()
     $sectionsData = [];
 
     if ($page) {
+
         $sections = $sectionModel->getByPage($page['id']);
+
+        if (!is_array($sections)) {
+            $sections = [];
+        }
 
         foreach ($sections as $section) {
 
+            if (!is_array($section)) {
+                continue;
+            }
+
             $blocks = $blockModel->getBySection($section['id']);
 
-            // 🔥 تحويل blocks إلى شكل usable (key => value)
+            if (!is_array($blocks)) {
+                $blocks = [];
+            }
+
             $formatted = [];
 
             foreach ($blocks as $block) {
+
+                if (!is_array($block)) {
+                    continue;
+                }
+
                 $formatted[$block['field_name']] = $block['content'];
             }
 
-            $sectionsData[$section['name']] = $formatted;
+            $sectionsData[$section['name'] ?? 'unknown'] = $formatted;
         }
     }
 
     return $this->view('pages/home', [
         'sections' => $sectionsData
     ]);
+}
 }
 }
