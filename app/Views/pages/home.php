@@ -2,8 +2,6 @@
 
 $sections = $sections ?? [];
 
-$isAdmin = $_SESSION['user']['role'] ?? 'user' === 'admin';
-
 ?>
 
 <!DOCTYPE html>
@@ -17,15 +15,20 @@ $isAdmin = $_SESSION['user']['role'] ?? 'user' === 'admin';
 
 <body>
 
-<?php require BASE_PATH . 'app/Components/home/header.php'; ?>
+<!-- HEADER -->
+<?php require BASE_PATH . '/app/Components/home/header.php'; ?>
 
-<?php require BASE_PATH . 'app/Components/home/hero.php'; ?>
+<!-- HERO -->
+<?php require BASE_PATH . '/app/Components/home/hero.php'; ?>
 
-<?php require BASE_PATH . 'app/Components/home/services.php'; ?>
+<!-- SERVICES -->
+<?php require BASE_PATH . '/app/Components/home/services.php'; ?>
 
-<?php require BASE_PATH . 'app/Components/home/choose.php'; ?>
+<!-- CHOOSE -->
+<?php require BASE_PATH . '/app/Components/home/choose.php'; ?>
 
-<?php require BASE_PATH . 'app/Components/home/footer.php'; ?>
+<!-- FOOTER -->
+<?php require BASE_PATH . '/app/Components/home/footer.php'; ?>
 
 </body>
 </html>
