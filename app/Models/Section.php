@@ -1,5 +1,3 @@
-<?php
-
 class Section
 {
     private PDO $db;
@@ -9,9 +7,6 @@ class Section
         $this->db = Database::getInstance()->connection();
     }
 
-    /**
-     * جلب Sections حسب الصفحة
-     */
     public function getByPage(int $page_id): array
     {
         $stmt = $this->db->prepare("
@@ -24,6 +19,8 @@ class Section
             'page_id' => $page_id
         ]);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return is_array($result) ? $result : [];
     }
 }

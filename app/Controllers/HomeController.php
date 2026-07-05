@@ -8,31 +8,38 @@ class HomeController extends controller
 
         $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
         $stmt->execute();
+
         $page = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $sectionsData = [];
+
+        if (!$page) {
+            return $this->view('pages/home', [
+                'sections' => []
+            ]);
+        }
 
         $sectionModel = new Section();
         $blockModel   = new Block();
 
-        $sectionsData = [];
+        $sections = $sectionModel->getByPage((int)$page['id']);
 
-        if ($page) {
+        foreach ($sections as $section) {
 
-            $sections = $sectionModel->getByPage($page['id']);
+            if (!is_array($section)) continue;
 
-            foreach ($sections as $section) {
+            $blocks = $blockModel->getBySection((int)$section['id']);
 
-                $blocks = $blockModel->getBySection($section['id']);
+            $formatted = [];
 
-                $formatted = [];
+            foreach ($blocks as $block) {
 
-                foreach ($blocks as $block) {
-                    $formatted[$block['field_name']] = $block['content'];
-                }
+                if (!is_array($block)) continue;
 
-                // 🔥 التوحيد هنا
-                $key = strtolower($section['name']);
-                $sectionsData[$key] = $formatted;
+                $formatted[$block['field_name']] = $block['content'];
             }
+
+            $sectionsData[$section['name']] = $formatted;
         }
 
         return $this->view('pages/home', [

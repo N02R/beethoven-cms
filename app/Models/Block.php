@@ -1,5 +1,3 @@
-<?php
-
 class Block
 {
     private PDO $db;
@@ -9,11 +7,10 @@ class Block
         $this->db = Database::getInstance()->connection();
     }
 
-    public function getBySection(int $section_id)
+    public function getBySection(int $section_id): array
     {
         $stmt = $this->db->prepare("
-            SELECT field_name, content 
-            FROM blocks 
+            SELECT * FROM blocks 
             WHERE section_id = :section_id
         ");
 
@@ -21,14 +18,8 @@ class Block
             'section_id' => $section_id
         ]);
 
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $result = [];
-
-        foreach ($rows as $row) {
-            $result[$row['field_name']] = $row['content'];
-        }
-
-        return $result;
+        return is_array($result) ? $result : [];
     }
 }
