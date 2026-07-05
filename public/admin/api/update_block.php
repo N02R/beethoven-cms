@@ -4,37 +4,69 @@ header('Content-Type: application/json');
 
 require_once __DIR__ . '/../../core/Database.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
+/*
+|--------------------------------------------------------------------------
+| قراءة الـ JSON القادم من fetch
+|--------------------------------------------------------------------------
+*/
 
-if (!isset($data['blocks'])) {
+$raw = file_get_contents("php://input");
+$data = json_decode($raw, true);
 
+/*
+|--------------------------------------------------------------------------
+| Debug: إذا لم يصل أي JSON
+|--------------------------------------------------------------------------
+*/
+
+if (!$data) {
     echo json_encode([
         'success' => false,
-        'message' => 'No data received'
+        'message' => 'Invalid JSON or empty request',
+        'raw' => $raw
     ]);
-
     exit;
+}
 
+/*
+|--------------------------------------------------------------------------
+| التحقق من وجود blocks
+|--------------------------------------------------------------------------
+*/
+
+if (!isset($data['blocks'])) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'blocks key missing',
+        'data' => $data
+    ]);
+    exit;
 }
 
 $blocks = $data['blocks'];
+
+/*
+|--------------------------------------------------------------------------
+| اختبار الاتصال فقط (بدون حفظ حاليًا)
+|--------------------------------------------------------------------------
+*/
 
 try {
 
     $db = Database::getInstance()->connection();
 
-    // فقط تجربة (بدون حفظ فعلي الآن)
     echo json_encode([
         'success' => true,
-        'message' => 'Data received successfully',
-        'received' => $blocks
+        'message' => 'API working correctly',
+        'received_blocks' => $blocks
     ]);
 
-} catch(Exception $e) {
+} catch (Exception $e) {
 
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage()
+        'message' => 'Database error',
+        'error' => $e->getMessage()
     ]);
 
 }
