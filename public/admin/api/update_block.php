@@ -51,10 +51,10 @@ try {
     }
 
     echo json_encode([
-        'success' => true,
-        'message' => 'Database updated successfully',
-        'updated' => $blocks
-    ]);
+    'success' => true,
+    'message' => 'Database updated successfully',
+    'updated' => $blocks
+], JSON_UNESCAPED_UNICODE);
 
 } catch (Exception $e) {
 
