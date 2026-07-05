@@ -172,25 +172,25 @@ let editMode = false;
    EDIT MODE TOGGLE
 ========================== */
 
-document.getElementById("editToggle").addEventListener("click", function() {
-    
+document.getElementById("editToggle").addEventListener("click", function(){
+
     editMode = !editMode;
-    
+
     document.body.classList.toggle("edit-mode", editMode);
-    
+
     document.querySelectorAll(".editable").forEach(el => {
         el.contentEditable = editMode;
     });
-    
-    this.textContent = editMode ?
-        "✅ Editing..." :
-        "✏️ Edit Mode";
-    
+
+    this.textContent = editMode
+        ? "✅ Editing..."
+        : "✏️ Edit Mode";
+
 });
 
 
 /* ==========================
-   SAVE BUTTON (COLLECT DATA ONLY)
+   SAVE BUTTON (ONLY UI TEST)
 ========================== */
 
 document.getElementById("saveBtn").addEventListener("click", function() {
@@ -206,7 +206,7 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         
     });
     
-    fetch("/admin/api/update-block.php", {
+    fetch(window.location.origin + "/admin/api/update-block.php", {
             
             method: "POST",
             
@@ -223,14 +223,12 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         .then(res => {
             
             alert("Server Response: " + JSON.stringify(res));
-            
             console.log(res);
             
         })
         .catch(err => {
             
             alert("Error sending data");
-            
             console.log(err);
             
         });
