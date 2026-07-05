@@ -172,33 +172,44 @@ let editMode = false;
    EDIT MODE TOGGLE
 ========================== */
 
-document.getElementById("editToggle").addEventListener("click", function(){
-
+document.getElementById("editToggle").addEventListener("click", function() {
+    
     editMode = !editMode;
-
+    
     document.body.classList.toggle("edit-mode", editMode);
-
+    
     document.querySelectorAll(".editable").forEach(el => {
         el.contentEditable = editMode;
     });
-
-    this.textContent = editMode
-        ? "✅ Editing..."
-        : "✏️ Edit Mode";
-
+    
+    this.textContent = editMode ?
+        "✅ Editing..." :
+        "✏️ Edit Mode";
+    
 });
 
 
 /* ==========================
-   SAVE BUTTON (ONLY UI TEST)
+   SAVE BUTTON (COLLECT DATA ONLY)
 ========================== */
 
-document.getElementById("saveBtn").addEventListener("click", function(){
-
-    alert("Save clicked");
-
-    console.log("Save button pressed (no API yet)");
-
+document.getElementById("saveBtn").addEventListener("click", function() {
+    
+    let data = [];
+    
+    document.querySelectorAll(".editable").forEach(el => {
+        
+        data.push({
+            id: el.dataset.id,
+            value: el.innerText
+        });
+        
+    });
+    
+    console.log("Collected Data:", data);
+    
+    alert("Check console for collected data");
+    
 });
 
 </script>
