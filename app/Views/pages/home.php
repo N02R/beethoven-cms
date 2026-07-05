@@ -2,17 +2,7 @@
 
 $sections = $sections ?? [];
 
-/*
-|--------------------------------------------------------------------------
-| HERO SAFE ACCESS
-|--------------------------------------------------------------------------
-*/
-
-$hero = $sections['hero'] ?? [];
-
-$title = $hero['title'] ?? 'No Title';
-$description = $hero['description'] ?? 'No Description';
-$buttonText = $hero['button_text'] ?? 'Button';
+$isAdmin = $_SESSION['user']['role'] ?? 'user' === 'admin';
 
 ?>
 
@@ -20,191 +10,22 @@ $buttonText = $hero['button_text'] ?? 'Button';
 <html lang="ar" dir="rtl">
 
 <head>
-
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title><?= APP_NAME ?></title>
-
     <link rel="stylesheet" href="<?= APP_URL ?>/assets/css/bootstrap.min.css">
-
-    <style>
-
-        *{
-            margin:0;
-            padding:0;
-            box-sizing:border-box;
-        }
-
-        body{
-            background:#0f172a;
-            color:#fff;
-            font-family:Arial,sans-serif;
-        }
-
-        /* TOOLBAR */
-        #cms-toolbar{
-            position:fixed;
-            top:20px;
-            right:20px;
-            z-index:99999;
-            display:flex;
-            gap:10px;
-        }
-
-        #editToggle,
-        #saveBtn{
-            padding:12px 18px;
-            border:none;
-            border-radius:8px;
-            cursor:pointer;
-            color:#fff;
-            font-size:14px;
-        }
-
-        #editToggle{ background:#2563eb; }
-        #saveBtn{ background:#16a34a; }
-
-        /* HERO */
-        .hero{
-            min-height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            text-align:center;
-            padding:40px;
-        }
-
-        .hero h1{
-            font-size:48px;
-            margin-bottom:20px;
-        }
-
-        .hero p{
-            font-size:20px;
-            margin-bottom:25px;
-            opacity:.9;
-        }
-
-        .hero a{
-            display:inline-block;
-            padding:12px 22px;
-            background:#2563eb;
-            color:#fff;
-            text-decoration:none;
-            border-radius:8px;
-        }
-
-        /* EDIT MODE */
-        .edit-mode .editable{
-            outline:2px dashed #38bdf8;
-            cursor:text;
-        }
-
-        .editable:focus{
-            outline:2px solid #38bdf8;
-            background:rgba(56,189,248,.08);
-        }
-
-    </style>
-
 </head>
 
 <body>
 
-<!-- TOOLBAR -->
-<div id="cms-toolbar">
+<?php require BASE_PATH . '/app/Views/components/home/header.php'; ?>
 
-    <button id="editToggle">✏️ Edit Mode</button>
-    <button id="saveBtn">💾 Save</button>
+<?php require BASE_PATH . '/app/Views/components/home/hero.php'; ?>
 
-</div>
+<?php require BASE_PATH . '/app/Views/components/home/services.php'; ?>
 
-<!-- HERO -->
-<section class="hero">
+<?php require BASE_PATH . '/app/Views/components/home/choose.php'; ?>
 
-    <div>
-
-        <h1 class="editable" data-id="1" contenteditable="false">
-            <?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?>
-        </h1>
-
-        <p class="editable" data-id="2" contenteditable="false">
-            <?= htmlspecialchars($description, ENT_QUOTES, 'UTF-8') ?>
-        </p>
-
-        <a href="#" class="editable" data-id="3" contenteditable="false">
-            <?= htmlspecialchars($buttonText, ENT_QUOTES, 'UTF-8') ?>
-        </a>
-
-    </div>
-
-</section>
-
-<!-- SCRIPT -->
-<script>
-
-let editMode = false;
-
-/* TOGGLE EDIT MODE */
-document.getElementById("editToggle").addEventListener("click", function(){
-
-    editMode = !editMode;
-
-    document.body.classList.toggle("edit-mode", editMode);
-
-    document.querySelectorAll(".editable").forEach(el => {
-        el.contentEditable = editMode;
-    });
-
-    this.textContent = editMode ? "✅ Editing..." : "✏️ Edit Mode";
-
-});
-
-
-/* SAVE */
-document.getElementById("saveBtn").addEventListener("click", function(){
-
-    let data = [];
-
-    document.querySelectorAll(".editable").forEach(el => {
-
-        data.push({
-            id: el.dataset.id,
-            value: el.innerText
-        });
-
-    });
-
-    fetch(window.location.origin + "/admin/api/update_block.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            blocks: data
-        })
-    })
-    .then(async res => {
-
-        let text = await res.text();
-
-        console.log("STATUS:", res.status);
-        console.log("RESPONSE:", text);
-
-        alert("STATUS: " + res.status + "\n" + text);
-
-    })
-    .catch(err => {
-
-        console.log("ERROR:", err);
-        alert("FETCH FAILED");
-
-    });
-
-});
-
-</script>
+<?php require BASE_PATH . '/app/Views/components/home/footer.php'; ?>
 
 </body>
 </html>
