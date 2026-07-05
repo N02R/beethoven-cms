@@ -2,10 +2,16 @@
 
 header('Content-Type: application/json');
 
-require_once __DIR__ . '/../../core/Database.php';
+require_once dirname(__DIR__, 3) . '/core/Database.php';
 
 $raw = file_get_contents("php://input");
 $data = json_decode($raw, true);
+
+/*
+|--------------------------------------------------------------------------
+| Validate input
+|--------------------------------------------------------------------------
+*/
 
 if (!isset($data['blocks'])) {
 
@@ -15,7 +21,6 @@ if (!isset($data['blocks'])) {
     ]);
 
     exit;
-
 }
 
 $blocks = $data['blocks'];
@@ -23,6 +28,12 @@ $blocks = $data['blocks'];
 try {
 
     $db = Database::getInstance()->connection();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update blocks
+    |--------------------------------------------------------------------------
+    */
 
     $stmt = $db->prepare("
         UPDATE blocks 

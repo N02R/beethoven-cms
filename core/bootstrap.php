@@ -8,7 +8,6 @@
 
 $config = require __DIR__ . '/../config/app.php';
 
-
 /*
 |--------------------------------------------------------------------------
 | Timezone
@@ -17,7 +16,6 @@ $config = require __DIR__ . '/../config/app.php';
 
 date_default_timezone_set($config['timezone']);
 
-
 /*
 |--------------------------------------------------------------------------
 | Application Constants
@@ -25,11 +23,15 @@ date_default_timezone_set($config['timezone']);
 */
 
 define('APP_NAME', $config['name']);
-
 define('APP_URL', rtrim($config['url'], '/'));
-
 define('APP_ENV', $config['environment']);
-
 define('APP_DEBUG', $config['debug']);
-
 define('APP_LOCALE', $config['locale']);
+
+/*
+|--------------------------------------------------------------------------
+| BASE PATH (🔥 مهم جداً لحل مشاكل المسارات)
+|--------------------------------------------------------------------------
+*/
+
+define('BASE_PATH', dirname(__DIR__));
