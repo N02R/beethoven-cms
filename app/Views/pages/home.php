@@ -206,9 +206,34 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         
     });
     
-    console.log("Collected Data:", data);
-    
-    alert("Check console for collected data");
+    fetch("<?= APP_URL ?>/admin/api/update-block.php", {
+            
+            method: "POST",
+            
+            headers: {
+                "Content-Type": "application/json"
+            },
+            
+            body: JSON.stringify({
+                blocks: data
+            })
+            
+        })
+        .then(res => res.json())
+        .then(res => {
+            
+            alert("Server Response: " + JSON.stringify(res));
+            
+            console.log(res);
+            
+        })
+        .catch(err => {
+            
+            alert("Error sending data");
+            
+            console.log(err);
+            
+        });
     
 });
 
