@@ -17,15 +17,15 @@ $isAdmin = $_SESSION['user']['role'] ?? 'user' === 'admin';
 
 <body>
 
-<?php require BASE_PATH . '/app/Components/home/header.php'; ?>
+<?php require BASE_PATH . 'app/Components/home/header.php'; ?>
 
-<?php require BASE_PATH . '/app/Components/home/hero.php'; ?>
+<?php require BASE_PATH . 'app/Components/home/hero.php'; ?>
 
-<?php require BASE_PATH . '/app/Components/home/services.php'; ?>
+<?php require BASE_PATH . 'app/Components/home/services.php'; ?>
 
-<?php require BASE_PATH . '/app/Components/home/choose.php'; ?>
+<?php require BASE_PATH . 'app/Components/home/choose.php'; ?>
 
-<?php require BASE_PATH . '/app/Components/home/footer.php'; ?>
+<?php require BASE_PATH . 'app/Components/home/footer.php'; ?>
 
 </body>
 </html>
