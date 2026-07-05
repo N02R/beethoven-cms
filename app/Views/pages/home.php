@@ -31,119 +31,87 @@ $hero = $sections['hero'] ?? [
         }
 
         body{
-
             background:#0f172a;
             color:#fff;
             font-family:Arial,sans-serif;
-
         }
 
         /* ==========================
-           Toolbar
+           TOOLBAR
         ========================== */
 
         #cms-toolbar{
-
             position:fixed;
-
             top:20px;
-
             right:20px;
-
             z-index:99999;
+            display:flex;
+            gap:10px;
+        }
 
+        #editToggle,
+        #saveBtn{
+            padding:12px 18px;
+            border:none;
+            border-radius:8px;
+            cursor:pointer;
+            color:#fff;
+            font-size:14px;
         }
 
         #editToggle{
-
-            padding:12px 18px;
-
-            border:none;
-
-            border-radius:8px;
-
-            cursor:pointer;
-
             background:#2563eb;
+        }
 
-            color:#fff;
-
-            font-size:15px;
-
+        #saveBtn{
+            background:#16a34a;
         }
 
         /* ==========================
-           Hero
+           HERO
         ========================== */
 
         .hero{
-
             min-height:100vh;
-
             display:flex;
-
             justify-content:center;
-
             align-items:center;
-
             text-align:center;
-
             padding:40px;
-
         }
 
         .hero h1{
-
             font-size:48px;
-
             margin-bottom:20px;
-
         }
 
         .hero p{
-
             font-size:20px;
-
             margin-bottom:25px;
-
             opacity:.9;
-
         }
 
         .hero a{
-
             display:inline-block;
-
             padding:12px 22px;
-
             background:#2563eb;
-
             color:#fff;
-
             text-decoration:none;
-
             border-radius:8px;
-
         }
 
         /* ==========================
-           Edit Mode
+           EDIT MODE
         ========================== */
 
         .edit-mode .editable{
-
             outline:2px dashed #38bdf8;
-
             cursor:text;
-
         }
 
         .editable:focus{
-
             outline:2px solid #38bdf8;
-
             background:rgba(56,189,248,.08);
-
         }
 
     </style>
@@ -152,22 +120,21 @@ $hero = $sections['hero'] ?? [
 
 <body>
 
+<!-- TOOLBAR -->
 <div id="cms-toolbar">
 
-    <button id="editToggle">
+    <button id="editToggle">✏️ Edit Mode</button>
 
-        ✏️ Edit Mode
-
-    </button>
+    <button id="saveBtn">💾 Save</button>
 
 </div>
 
+<!-- HERO -->
 <section class="hero">
 
     <div>
 
-        <h1
-            class="editable"
+        <h1 class="editable"
             data-id="1"
             contenteditable="false">
 
@@ -175,20 +142,18 @@ $hero = $sections['hero'] ?? [
 
         </h1>
 
-        <p
-            class="editable"
-            data-id="2"
-            contenteditable="false">
+        <p class="editable"
+           data-id="2"
+           contenteditable="false">
 
             <?= htmlspecialchars($hero['description']) ?>
 
         </p>
 
-        <a
-            href="#"
-            class="editable"
-            data-id="3"
-            contenteditable="false">
+        <a href="#"
+           class="editable"
+           data-id="3"
+           contenteditable="false">
 
             <?= htmlspecialchars($hero['button_text']) ?>
 
@@ -198,38 +163,45 @@ $hero = $sections['hero'] ?? [
 
 </section>
 
+<!-- SCRIPT -->
 <script>
 
 let editMode = false;
 
-const button = document.getElementById("editToggle");
+/* ==========================
+   EDIT MODE TOGGLE
+========================== */
 
-button.addEventListener("click", function () {
+document.getElementById("editToggle").addEventListener("click", function(){
 
     editMode = !editMode;
 
     document.body.classList.toggle("edit-mode", editMode);
 
-    document.querySelectorAll(".editable").forEach(function(el){
-
+    document.querySelectorAll(".editable").forEach(el => {
         el.contentEditable = editMode;
-
     });
 
-    if(editMode){
+    this.textContent = editMode
+        ? "✅ Editing..."
+        : "✏️ Edit Mode";
 
-        button.textContent = "✅ Editing...";
+});
 
-    }else{
 
-        button.textContent = "✏️ Edit Mode";
+/* ==========================
+   SAVE BUTTON (ONLY UI TEST)
+========================== */
 
-    }
+document.getElementById("saveBtn").addEventListener("click", function(){
+
+    alert("Save clicked");
+
+    console.log("Save button pressed (no API yet)");
 
 });
 
 </script>
 
 </body>
-
 </html>
