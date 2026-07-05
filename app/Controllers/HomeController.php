@@ -55,4 +55,3 @@ public function index()
     ]);
 }
 }
-}
