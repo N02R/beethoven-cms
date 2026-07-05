@@ -206,7 +206,7 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         
     });
     
-    fetch("<?= APP_URL ?>/admin/api/update-block.php", {
+    fetch("/admin/api/update-block.php", {
             
             method: "POST",
             
