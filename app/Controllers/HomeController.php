@@ -2,20 +2,25 @@
 
 class HomeController extends controller
 {
-public function index()
-{
-    $db = Database::getInstance()->connection();
+    public function index()
+    {
+        $db = Database::getInstance()->connection();
 
-    $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
-    $stmt->execute();
-    $page = $stmt->fetch(PDO::FETCH_ASSOC);
+        // جلب الصفحة الرئيسية
+        $stmt = $db->prepare("SELECT * FROM pages WHERE slug = 'home' LIMIT 1");
+        $stmt->execute();
+        $page = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    $sectionModel = new Section();
-    $blockModel = new Block();
+        $sectionsData = [];
 
-    $sectionsData = [];
+        if (!$page) {
+            return $this->view('pages/home', [
+                'sections' => []
+            ]);
+        }
 
-    if ($page) {
+        $sectionModel = new Section();
+        $blockModel   = new Block();
 
         $sections = $sectionModel->getByPage($page['id']);
 
@@ -25,7 +30,7 @@ public function index()
 
         foreach ($sections as $section) {
 
-            if (!is_array($section)) {
+            if (!is_array($section) || !isset($section['id'])) {
                 continue;
             }
 
@@ -43,15 +48,21 @@ public function index()
                     continue;
                 }
 
-                $formatted[$block['field_name']] = $block['content'];
+                $key = $block['field_name'] ?? null;
+                $value = $block['content'] ?? '';
+
+                if ($key) {
+                    $formatted[$key] = $value;
+                }
             }
 
-            $sectionsData[$section['name'] ?? 'unknown'] = $formatted;
-        }
-    }
+            $sectionName = $section['name'] ?? 'unknown';
 
-    return $this->view('pages/home', [
-        'sections' => $sectionsData
-    ]);
-}
+            $sectionsData[$sectionName] = $formatted;
+        }
+
+        return $this->view('pages/home', [
+            'sections' => $sectionsData
+        ]);
+    }
 }
