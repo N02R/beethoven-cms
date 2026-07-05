@@ -204,7 +204,7 @@ document.getElementById("saveBtn").addEventListener("click", function() {
         });
     });
     
-    fetch(window.location.origin + "/admin/api/update-block.php", {
+    fetch(window.location.origin + "/admin/api/update_block.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
